@@ -1,6 +1,0 @@
-Hello World.
-We are on the 2nd line now.
-My name is vijay.
-We are on the 4th line now.
-
-We are on line 6, line 5 being empty.
