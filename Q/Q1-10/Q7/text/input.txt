@@ -1,0 +1,3 @@
+Hello World.
+This is vijay.
+We are in the input.txt file.
