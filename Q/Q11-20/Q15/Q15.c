@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
-extern char **environ;
+extern char **environ;  // Its an array of strings.
 
 int main(void) {
-    // TODO: Declare a pointer of type char ** to iterate over environ.
+    char **ptr = environ;
 
-    // TODO: Loop through environ until reaching the NULL sentinel pointer.
-
-    // TODO: Print each environment variable string to standard output.
+    while (*ptr != NULL) {
+        printf("%s\n", *ptr);
+        ptr++;
+    }
 
     return 0;
 }
