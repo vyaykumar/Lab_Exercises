@@ -6,7 +6,7 @@
 int main(int argc, char *argv[]) {
     // TODO: Verify that argc equals 2 (program name and file path).
     if (argc != 2) {
-        printf ("Usage: <source>\n");
+        printf ("Usage: %s <source>\n", argv[0]);
         return 1;
     }
 
@@ -14,14 +14,13 @@ int main(int argc, char *argv[]) {
     const int fd = open(argv[1], O_RDWR | O_APPEND);
     if (fd < 0) {
         perror("open() failed");
-        printf("Error code: %d", errno);
         return 1;
     }
-    printf("File Descriptor: \t\t%d\n", fd);
+    printf("File Descriptor: %d\n", fd);
 
     // TODO: Use fcntl(fd, F_GETFL) to retrieve the file status flags.
     auto status = fcntl(fd, F_GETFL);
-    if (status == 1) {
+    if (status == -1) {
         perror("fcntl failed");
         return 1;
     }
@@ -38,8 +37,8 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO: Check for optional flags like O_APPEND, O_NONBLOCK, and print their presence.
-    if (access_mode & O_APPEND) printf("Flag: O_APPEND is set.\n");
-    if (access_mode & O_NONBLOCK) printf("Flag: O_NONBLOCK is set.\n");
+    if (status & O_APPEND) printf("Flag: O_APPEND is set.\n");
+    if (status & O_NONBLOCK) printf("Flag: O_NONBLOCK is set.\n");
 
     // TODO: Close the file descriptor.
     close(fd);
