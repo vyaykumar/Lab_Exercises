@@ -2,7 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void status_check (int fd) {
+static void status_check (const int fd) {
     auto status = fcntl(fd, F_GETFL);
     if (status == -1) {
         perror("fcntl failed");
@@ -24,13 +24,11 @@ void status_check (int fd) {
 }
 
 int main(int argc, char *argv[]) {
-    // TODO: Verify that argc equals 2 (program name and file path).
     if (argc != 2) {
         printf ("Usage: %s <source>\n", argv[0]);
         return 1;
     }
 
-    // TODO: Open the file using custom flags (e.g., O_RDWR | O_APPEND).
     printf("Testing ReadOnly.\n");
     const int fd1 = open(argv[1], O_RDONLY);
     if (fd1 < 0) { perror("open() failed"); return 1; }
@@ -49,7 +47,6 @@ int main(int argc, char *argv[]) {
     printf("File Descriptor: %d\n", fd3);
     status_check(fd3);
 
-    // TODO: Close the file descriptor.
     close(fd1);
     close(fd2);
     close(fd3);
