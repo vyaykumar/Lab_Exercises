@@ -5,27 +5,29 @@
 #include <errno.h>
 
 int main(int argc, char *argv[]) {
-    // TODO: Verify that argc equals 2 (program name and target file path).
+    if (argc != 2) { printf("Usage: <source>\n"); return 1; }
 
-    // TODO: Declare a struct stat instance to hold file metadata.
+    struct stat sb;
 
-    // TODO: Call stat(argv[1], &file_stat) and check for errors.
+    if (stat(argv[1], &sb)) { perror("stat syscall failed"); return 1; }
 
-    // TODO: Print the Inode number (st_ino).
-
-    // TODO: Print the Number of hard links (st_nlink).
-
-    // TODO: Determine and print the file type (regular file, directory, symlink, etc.) using S_IS* macros.
-
-    // TODO: Print raw octal permissions (st_mode & 0777).
-
-    // TODO: Print UID (st_uid) and GID (st_gid).
-
-    // TODO: Print file size in bytes (st_size).
-
-    // TODO: Print optimal block size (st_blksize) and block count (st_blocks).
-
-    // TODO: Format and print timestamps (st_atime, st_mtime, st_ctime) using ctime().
+    printf("Inode Number:\t\t%lu\n",         sb.st_ino);
+    printf("Number of hard links:\t%lu\n",   sb.st_nlink);
+    printf("\n");
+    printf("Is this a directory:\t%d\n",     S_ISDIR(sb.st_mode));
+    printf("Is this a FIFO/pipe:\t%d\n",     S_ISFIFO(sb.st_mode));
+    printf("Is this a regular file:\t%d\n",  S_ISREG(sb.st_mode));
+    printf("\n");
+    printf("File permissions:\t%u\n",        sb.st_mode & 0777);
+    printf("User ID:\t\t%u\n",               sb.st_uid);
+    printf("Group ID:\t\t%u\n",              sb.st_gid);
+    printf("File size:\t\t%ld\n",            sb.st_size);
+    printf("Optimal block size:\t%ld\n",     sb.st_blksize);
+    printf("Block count:\t\t%ld\n",          sb.st_blocks);
+    printf("\n");
+    printf("Last access:\t\t%s",             ctime(&sb.st_atime));
+    printf("Last modification:\t%s",         ctime(&sb.st_mtime));
+    printf("Last status change:\t%s",        ctime(&sb.st_ctime));
 
     return 0;
 }
