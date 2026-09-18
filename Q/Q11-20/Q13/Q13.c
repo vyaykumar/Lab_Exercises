@@ -1,22 +1,27 @@
 #include <stdio.h>
-#include <fcntl.h>
 #include <unistd.h>
+#include <sys/select.h>
+#include <sys/time.h>
 #include <errno.h>
 
-int main(int argc, char *argv[]) {
-    // TODO: Verify that argc equals 2 (program name and file path).
+int main(void) {
+    // TODO: Declare an fd_set variable.
+    fd_set set;
 
-    // TODO: Open the file using custom flags (e.g., O_RDWR | O_APPEND).
+    // TODO: Clear the set with FD_ZERO() and add STDIN_FILENO with FD_SET().
+    FD_ZERO(&set);
+    FD_SET(STDIN_FILENO, &set);
 
-    // TODO: Use fcntl(fd, F_GETFL) to retrieve the file status flags.
+    // TODO: Declare and set a struct timeval instance for a 10-second timeout.
+    // struct timeval timeout; Don't know how to initialize.
 
-    // TODO: Extract the access mode using (flags & O_ACCMODE).
+    // TODO: Call select(STDIN_FILENO + 1, &readfds, NULL, NULL, &timeout).
+    auto res = select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout);
 
-    // TODO: Compare the result against O_RDONLY, O_WRONLY, and O_RDWR and print the mode.
+    // TODO: Check the return value of select (error, timeout, or ready).
+    // if (res == ) Don't know the output values.
 
-    // TODO: Check for optional flags like O_APPEND, O_NONBLOCK, and print their presence.
-
-    // TODO: Close the file descriptor.
+    // TODO: If ready, confirm with FD_ISSET() and read the input using read().
 
     return 0;
 }
