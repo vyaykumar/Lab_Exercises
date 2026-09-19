@@ -6,7 +6,6 @@ int main(void) {
     char *const envp[] = {NULL};
     char *const args[] = {"ls", "-Rl", NULL};
 
-    // a. execl: path, argument list, NULL
     pid = fork();
     if (pid == 0) {
         execl("/bin/ls", "ls", "-Rl", NULL);
@@ -15,7 +14,6 @@ int main(void) {
     }
     wait(NULL);
 
-    // b. execlp: filename, argument list, NULL (searches PATH)
     pid = fork();
     if (pid == 0) {
         execlp("ls", "ls", "-Rl", NULL);
@@ -24,7 +22,6 @@ int main(void) {
     }
     wait(NULL);
 
-    // c. execle: path, argument list, NULL, environment array
     pid = fork();
     if (pid == 0) {
         execle("/bin/ls", "ls", "-Rl", NULL, envp);
@@ -33,7 +30,6 @@ int main(void) {
     }
     wait(NULL);
 
-    // d. execv: path, argument array
     pid = fork();
     if (pid == 0) {
         execv("/bin/ls", args);
@@ -42,7 +38,6 @@ int main(void) {
     }
     wait(NULL);
 
-    // e. execvp: filename, argument array (searches PATH)
     pid = fork();
     if (pid == 0) {
         execvp("ls", args);
