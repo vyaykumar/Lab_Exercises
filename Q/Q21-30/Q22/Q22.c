@@ -12,15 +12,23 @@ int main(int argc, char *argv[]) {
 
     // TODO: Open the file with open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0644).
     int fd = open(argv[1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) {
+        perror("open() failed");
+        return 1;
+    }
 
     // TODO: Call fork().
     pid_t parent = fork();
+    if (parent == -1) {
+        perror("fork() failed");
+        return 1;
+    }
 
     // TODO: In the parent process:
     //       - Write a distinct message string to the open file using write().
     if (parent) {
         char buffer[] = "Hello, from parent process.";
-        if (write(fd, buffer, sizeof(buffer)) < 0) {
+        if ( write(fd, buffer, sizeof(buffer)-1) < 0) {
             perror("parent write() failed");
             return 1;
         }
@@ -30,7 +38,7 @@ int main(int argc, char *argv[]) {
     //       - Write a distinct message string to the open file using write().
     if (!parent) {
         char buffer[] = "Hello, from child process.";
-        if (write(fd, buffer, sizeof(buffer)) < 0) {
+        if (write(fd, buffer, sizeof(buffer)-1) < 0) {
             perror("child write() failed");
             return 1;
         }
