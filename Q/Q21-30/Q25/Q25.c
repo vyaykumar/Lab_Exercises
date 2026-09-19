@@ -33,7 +33,7 @@ int main(void) {
     //       - Inspect status using WIFEXITED(status) and WEXITSTATUS(status).
     pid_t target_pid = pids[1];
     int status;
-    printf("\nParent waiting for Child 2 (PID: %d) only...\n", target_pid);
+    printf("\nParent waiting for Child 2 (PID: %d) only...\n\n", target_pid);
     pid_t waited_pid = waitpid(target_pid, &status, 0);
 
     if (waited_pid == -1) {
