@@ -3,35 +3,24 @@
 #include <stdio.h>
 
 int main(void) {
-    // TODO: Get current scheduling policy using sched_getscheduler(0).
-    int current_policy = sched_getscheduler(0);
-    if (current_policy == -1) {
-        perror("sched_getscheduler() failed");
+    int max_fifo = sched_get_priority_max(SCHED_FIFO);
+    int min_fifo = sched_get_priority_min(SCHED_FIFO);
+
+    if (max_fifo == -1 || min_fifo == -1) {
+        perror("sched_get_priority for SCHED_FIFO failed");
         return 1;
     }
 
-    // TODO: Declare and set struct sched_param.
-    //       - param.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    struct sched_param sp;
-    sp.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    if (sp.sched_priority == -1) {
-        perror("sched_get_priority_max() failed");
+    int max_rr = sched_get_priority_max(SCHED_RR);
+    int min_rr = sched_get_priority_min(SCHED_RR);
+
+    if (max_rr == -1 || min_rr == -1) {
+        perror("sched_get_priority for SCHED_RR failed");
         return 1;
     }
 
-    // TODO: Change policy to SCHED_FIFO or SCHED_RR using:
-    //       sched_setscheduler(0, SCHED_FIFO, &param).
-    if (sched_setscheduler(0, SCHED_FIFO, &sp) == -1) {
-        perror("sched_setscheduler failed (run with sudo)");
-        return 1;
-    }
-
-    // TODO: Verify the updated policy using sched_getscheduler(0).
-    int new_policy = sched_getscheduler(0);
-    if (new_policy == SCHED_FIFO)
-        write(STDOUT_FILENO, "Successfully changed to SCHED_FIFO\n", 35);
-     else
-        write(STDERR_FILENO, "Policy mismatch\n", 16);
+    printf("SCHED_FIFO Priority Range: Min = %d, Max = %d\n", min_fifo, max_fifo);
+    printf("SCHED_RR   Priority Range: Min = %d, Max = %d\n", min_rr, max_rr);
 
     return 0;
 }
