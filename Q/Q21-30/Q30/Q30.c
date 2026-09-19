@@ -8,60 +8,49 @@
 int main(void) {
     char cwd[PATH_MAX];
     if (getcwd(cwd, sizeof(cwd)) == NULL) {
-        perror("getcwd failed");
         return 1;
     }
 
-    char script_path[PATH_MAX];
+    char script_path[PATH_MAX + 16];
     snprintf(script_path, sizeof(script_path), "%s/task.sh", cwd);
 
-    // TODO: Call fork() and terminate parent with _exit(0).
     pid_t pid = fork();
-    if (pid == -1) {
-        perror("fork()");
+    if (pid < 0) {
         return 1;
     }
-
-    if (pid != 0) {
+    if (pid > 0) {
         _exit(0);
     }
 
-    // TODO: Call setsid() to create a new session and detach from controlling terminal.
-    if (setsid() == -1) {
+    if (setsid() < 0) {
         _exit(1);
     }
 
-    // TODO: Call chdir("/") to ensure daemon does not pin any mount points.
-    if (chdir("/") == -1) {
-        _exit(1);
-    }
-
-    // TODO: Call umask(0) to reset file creation mask.
     umask(0);
 
-    // TODO: Close or redirect STDIN_FILENO, STDOUT_FILENO, and STDERR_FILENO using open("/dev/null", O_RDWR) and dup2().
-    int dev_null = open("/dev/null", O_RDWR);
-    if (dev_null == -1) {
+    if (chdir(cwd) < 0) {
         _exit(1);
     }
 
-    dup2(dev_null, STDIN_FILENO);
-    dup2(dev_null, STDOUT_FILENO);
-    dup2(dev_null, STDERR_FILENO);
-
-    if (dev_null > STDERR_FILENO) {
-        close(dev_null);
+    int log_fd = open("daemon_output.log", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (log_fd >= 0) {
+        dup2(log_fd, STDOUT_FILENO);
+        dup2(log_fd, STDERR_FILENO);
+        if (log_fd > STDERR_FILENO) {
+            close(log_fd);
+        }
     }
 
-    sleep(10);
-
-    if (chdir(cwd) == -1) {
-        _exit(1);
+    int dev_null = open("/dev/null", O_RDONLY);
+    if (dev_null >= 0) {
+        dup2(dev_null, STDIN_FILENO);
+        if (dev_null > STDERR_FILENO) {
+            close(dev_null);
+        }
     }
 
-    // TODO: Execute the daemon payload loop using sleep() or pause().
-    execlp("x-terminal-emulator", "x-terminal-emulator", "-e", "/bin/sh", script_path, NULL);
+    sleep(2);
+
     execl("/bin/sh", "sh", script_path, NULL);
-
-    return 0;
+    _exit(1);
 }
