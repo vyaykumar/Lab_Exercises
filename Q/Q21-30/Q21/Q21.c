@@ -15,7 +15,7 @@ int main(void) {
         pid_t ppid = getppid();
 
         char buffer[128];
-        int len = snprintf(buffer, sizeof(buffer), "Child Process\nPID: %d\nPPID: %d\n", pid, ppid);
+        int len = snprintf(buffer, sizeof(buffer), "Child Process\nPID: %d\nPPID: %d\n\n", pid, ppid);
         if (len > 0 && (write(STDOUT_FILENO, buffer, len) < 0)) {
             perror("child write() failed");
             return 1;
@@ -27,7 +27,7 @@ int main(void) {
         pid_t cid = child;
 
         char buffer[128];
-        int len = snprintf(buffer, sizeof(buffer), "Parent Process\nPID: %d\nChild PID: %d\n", pid, cid);
+        int len = snprintf(buffer, sizeof(buffer), "Parent Process\nPID: %d\nChild PID: %d\n\n", pid, cid);
         if (len > 0 && write(STDOUT_FILENO, buffer, len) < 0) {
             perror("parent write() failed");
             return 1;
