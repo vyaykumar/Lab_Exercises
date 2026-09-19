@@ -13,16 +13,16 @@ int main(int argc, char *argv[]) {
     }
     printf ("Current priority: %d\n", priority);
 
-    int new_priority = 15;
+    int increment = 5;
     if (argc == 2)
-        new_priority = atoi(argv[1]);
+        increment = atoi(argv[1]);
 
-    priority = setpriority(PRIO_PROCESS, 0, new_priority);
-    if (priority < 0) {
-        perror("setpriority() failed");
+    errno = 0;
+    int ret = nice(increment);
+    if (ret == -1 && errno != 0) {
+        perror("nice() failed");
         return 1;
     }
-
 
     errno = 0;
     priority = getpriority(PRIO_PROCESS, 0);
