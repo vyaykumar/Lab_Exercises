@@ -32,16 +32,16 @@ int main(int argc, char *argv[]) {
     fl.l_pid = getpid();
 
     // TODO: Call fcntl(fd, F_SETLK, &lock) for non-blocking or F_SETLKW for blocking.
-    // F_SETLK for BLocking lock
-    // F_SETLKW for NonBlocking lock
+    // F_SETLK for NonBlocking lock
+    // F_SETLKW for Blocking lock
     if (fcntl(fd, F_SETLK, &fl) == -1) {
         // TODO: Check if the lock was acquired or if an error occurred (e.g., EACCES, EAGAIN).
         if (errno == EAGAIN || errno == EACCES) {
             printf("File is locked by another process.\n");
-            printf("Using the non-blocking F_SETLKW.\n");
+            printf("Waiting with blocking F_SETLKW.\n");
 
             if (fcntl(fd, F_SETLKW, &fl) == -1) {
-                perror ("fcnctl(F_SETLKW) failed");
+                perror ("fcntl(F_SETLKW) failed");
                 close(fd);
                 return 1;
             }
@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
 
     // TODO: Simulate a critical section (e.g., sleep or prompt user input).
     printf("Press any key to release the lock and exit...\n");
+    fflush(stdout);
     getchar();
 
     // TODO: Release the lock by setting l_type = F_UNLCK and calling fcntl().
