@@ -4,7 +4,7 @@
 
 int main(void) {
     // TODO: Invoke the fork() system call.
-    int child = fork();
+    pid_t child = fork();
 
     // TODO: Verify fork() return value for error handling (-1).
     if (child == -1) {
@@ -19,7 +19,7 @@ int main(void) {
 
     if (child == 0) {
         pid_t pid = getpid();
-        pid_t ppid = getpid();
+        pid_t ppid = getppid();
 
         char buffer[128];
         int len = snprintf(buffer, sizeof(buffer), "Child Process\nPID: %d\nPPID: %d\n", pid, ppid);
@@ -34,8 +34,8 @@ int main(void) {
     //       - Retrieve child PID from fork return value.
     //       - Write details to STDOUT_FILENO using write().
     else {
-        int pid = getpid();
-        int cid = child;
+        pid_t pid = getpid();
+        pid_t cid = child;
 
         char buffer[128];
         int len = snprintf(buffer, sizeof(buffer), "Parent Process\nPID: %d\nChild PID: %d\n", pid, cid);
