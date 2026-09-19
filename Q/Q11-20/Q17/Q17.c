@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
 
 // Use
 // (set +m; for i in {1..100}; do ./Q17 db.bin > /dev/null & done; wait)
