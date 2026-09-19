@@ -6,11 +6,11 @@
 // (set +m; for i in {1..100}; do ./Q17 db.bin > /dev/null & done; wait)
 // od -An -td4 db.bin
 
-struct record {
-    int ticket_no;
-};
-
 int main(int argc, char *argv[]) {
+    struct record {
+        int ticket_no;
+    };
+
     if (argc != 2) {
         printf("Usage: %s <source>\n", argv[0]);
         return 1;
