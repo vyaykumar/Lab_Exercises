@@ -18,28 +18,31 @@ int main(int argc, char *argv[]) {
     }
 
     // TODO: Call fork().
-    pid_t parent = fork();
-    if (parent == -1) {
+    pid_t pid = fork();
+    if (pid < 0) {
         perror("fork() failed");
+        close(fd);
         return 1;
     }
 
     // TODO: In the parent process:
     //       - Write a distinct message string to the open file using write().
-    if (parent) {
+    if (pid > 0) {
         char buffer[] = "Hello, from parent process.";
-        if ( write(fd, buffer, sizeof(buffer)-1) < 0) {
+        if (write(fd, buffer, sizeof(buffer)-1) < 0) {
             perror("parent write() failed");
+            close(fd);
             return 1;
         }
     }
 
     // TODO: In the child process:
     //       - Write a distinct message string to the open file using write().
-    if (!parent) {
+    if (pid == 0) {
         char buffer[] = "Hello, from child process.";
         if (write(fd, buffer, sizeof(buffer)-1) < 0) {
             perror("child write() failed");
+            close(fd);
             return 1;
         }
     }
