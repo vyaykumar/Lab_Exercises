@@ -1,27 +1,26 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
 
+static uint64_t rdtsc(void) {
+    unsigned int lo, hi;
+    __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
+    return ((uint64_t)hi << 32) | lo;
+}
 
 int main(void) {
-    struct timespec start, end;
+    // struct timespec start, end;
 
-    if (clock_gettime(CLOCK_MONOTONIC, &start) < 0) {
-        perror("clock_gettime(start) failed");
-        return 1;
-    }
+    uint64_t start = rdtsc();
 
     int pid = getpid();
 
-    if (clock_gettime(CLOCK_MONOTONIC, &end) < 0) {
-        perror ("clock_gettime(end) failed");
-        return 1;
-    }
+    uint64_t end = rdtsc();
 
-    unsigned long long elapse = (long long) (end.tv_sec - start.tv_sec)* 1000000000ULL +
-                                (long long) (end.tv_nsec-start.tv_nsec);
+    unsigned long elapse = (end-start);
 
-    printf("Time elapsed for getting PID %d: %llu\n", pid, elapse);
+    printf("Time elapsed for getting PID %d: %lu\n", pid, elapse);
 
     return 0;
 }
