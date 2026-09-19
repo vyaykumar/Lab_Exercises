@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     // TODO: Increment the ticket number and print the updated value.
     buffer.ticket_no++;
     printf("Ticket Number: %d\n", buffer.ticket_no);
+    printf("Sleeping for 3 seconds.\n"); usleep(1000);
 
     // TODO: Seek back to the record position using lseek(fd, 0, SEEK_SET).
     off_t l_res = lseek(fd, 0, SEEK_SET);
