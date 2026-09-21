@@ -5,14 +5,13 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        printf ("Usage: <source>\n");
+        fprintf(stderr, "Usage: %s <source>\n", argv[0]);
         return 1;
     }
 
     const int fd = open(argv[1], O_RDWR | O_CREAT | O_APPEND, 0644);
     if (fd < 0) {
         perror("open() failed");
-        printf("Error code: %d", errno);
         return 1;
     }
     printf("File Descriptor: \t\t%d\n", fd);
@@ -20,7 +19,6 @@ int main(int argc, char *argv[]) {
     const int fd_d1 = dup(fd);
     if (fd_d1 < 0) {
         perror("dup() failed");
-        printf("Error code: %d\n", errno);
         return 1;
     }
     printf("File Descriptor, by dup(): \t%d\n", fd_d1);
@@ -30,7 +28,6 @@ int main(int argc, char *argv[]) {
     const int fd_d2 = dup2(fd, target);
     if (fd_d2 < 0) {
         perror("dup2() failed");
-        printf("Error code: %d\n", errno);
         return 1;
     }
     printf("File Descriptor, by dup2(): \t%d\n", fd_d2);
@@ -39,7 +36,6 @@ int main(int argc, char *argv[]) {
     ssize_t write1 = write(fd, word1, 3);
     if (write1 < 0) {
         perror("write() failed");
-        printf("Error code: %d\n", errno);
         return 1;
     }
 
@@ -47,7 +43,6 @@ int main(int argc, char *argv[]) {
     ssize_t write2 = write(fd_d1, word2, 5);
     if (write2 < 0) {
         perror("write() failed");
-        printf("Error code: %d\n", errno);
         return 1;
     }
 
@@ -55,7 +50,6 @@ int main(int argc, char *argv[]) {
     ssize_t write3 = write(fd_d2, word3, 3);
     if (write3 < 0) {
         perror("write() failed");
-        printf("Error code: %d\n", errno);
         return 1;
     }
 
