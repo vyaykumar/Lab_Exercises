@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-char *Q3_PATH = "../Q_3/Q_3_output.txt";
+static char* Q3_PATH = "../Q_3/Q_3_output.txt";
 
 // Opens a file, validates fd, and returns it.
 static int open_file(const char *path, const int flags, const mode_t mode) {
@@ -19,34 +19,23 @@ static int open_file(const char *path, const int flags, const mode_t mode) {
 }
 
 int main() {
+    // The usual
+    int fd = open_file(Q3_PATH, O_RDWR, 0);
+    if (fd >= 0)
+        close(fd);
 
-	// int res = open (Q3_PATH, O_RDWR);
-	// if (res < 0) {
-	// 	perror("open with O_RDWR failed.\n");
-	// 	printf("errno value: %d\n", errno);
-	// 	return -1;
-	// }
-	// printf("Q3_output opened successfully with O_RDWR.\n");
-	// close(res);
-	int res = open_file (Q3_PATH, O_RDWR, 0);
-	if (res != -1) 
-		printf("Q3_output opened successfully with O_RDWR.\n");	// This is redundant.
-	close(res);
-	
-	// res = open (Q3_PATH, O_RDWR | O_EXCL);
-	// if (res < 0) {
-	// 	perror("open with O_RDWR and O_EXCL failed.\n");
-	// 	printf("errno value: %d\n", errno);
-	// 	return -1;
-	// }
-	// printf("Q3_output opened successfully with O_RDWR and O_EXCL.\n");
-	// close (res);
-	close (open_file(Q3_PATH, O_RDWR | O_EXCL, 0644));
+    // O_RDWR | O_EXCL
+    fd = open_file(Q3_PATH, O_RDWR | O_EXCL, 0);
+    if (fd >= 0)
+        close(fd);
 
-	res = open_file(Q3_PATH, O_CREAT | O_EXCL, 0644);
-	if (res != -1) 
-		printf("Q3_output opened successfully with O_CREAT and O_EXCL.\n");
-	close(res);
-		
+    // Previous with O_CREAT
+    fd = open_file(Q3_PATH, O_RDWR | O_CREAT | O_EXCL, 0644);
+    if (fd >= 0) {
+        printf("File created exclusively.\n");
+        close(fd);
+    } else if (errno == EEXIST)
+        printf("Expected error: File already exists (EEXIST).\n");
+
     return 0;
 }
