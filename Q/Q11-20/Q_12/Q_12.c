@@ -3,9 +3,9 @@
 #include <unistd.h>
 
 static void status_check (const int fd) {
-    auto status = fcntl(fd, F_GETFL);
+    int status = fcntl(fd, F_GETFL);
     if (status == -1) {
-        perror("fcntl failed");
+        perror("fcntl(F_GETFL) failed");
         return ;
     }
 
