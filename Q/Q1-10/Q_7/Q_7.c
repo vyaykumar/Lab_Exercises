@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	char buffer[BUFFER_SIZE];
-
     ssize_t bytes_read;
+
 	while ((bytes_read = read(source, buffer, BUFFER_SIZE)) > 0) {
 		const ssize_t write_res = write(destination, buffer, (size_t)bytes_read);
 		if (write_res < 0) {
