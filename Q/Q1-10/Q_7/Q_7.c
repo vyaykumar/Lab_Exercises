@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		fprintf(stderr, "Usage: %s <source> <destination>\n", argv[0]);
-		return -1;
+		return 1;
 	}
 
 	int source = open (argv[1], O_RDONLY);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 			perror("Error writing to destination file");
 			close(source);
 			close(destination);
-			return -1;
+			return 1;
 		}
 	}
 	if (bytes_read < 0) {
