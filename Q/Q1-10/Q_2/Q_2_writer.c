@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <string.h>
 
-#define FIFO_PATH "my_pipe"
+#define FIFO_PATH "/tmp/my_pipe"
 
 int main(void) {
     int res = mkfifo(FIFO_PATH, 0666);

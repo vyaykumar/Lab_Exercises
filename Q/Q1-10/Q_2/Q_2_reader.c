@@ -7,7 +7,7 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#define FIFO_PATH "my_pipe"
+#define FIFO_PATH "/tmp/my_pipe"
 #define BUFFER_SIZE 256
 
 int main(void) {
