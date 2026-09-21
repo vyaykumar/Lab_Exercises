@@ -17,7 +17,7 @@ int main(void) {
     if (pid != 0) {
         printf("Parent PID: %d\n", getpid());
         printf("Child (zombie) PID: %d\n", pid);
-        printf("Sleeping for 30 seconds. Check process table with 'ps -l' or 'ps aux'...\n");
+        printf("Sleeping for 30 seconds. Check process table with 'ps -l | grep 'Z'' or 'ps aux'...\n");
 
         sleep(30);
     }
