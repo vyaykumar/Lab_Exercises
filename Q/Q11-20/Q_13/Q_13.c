@@ -5,23 +5,18 @@
 #include <errno.h>
 
 int main(void) {
-    // TODO: Declare an fd_set variable.
     fd_set set;
 
-    // TODO: Clear the set with FD_ZERO() and add STDIN_FILENO with FD_SET().
     FD_ZERO(&set);
     FD_SET(STDIN_FILENO, &set);
 
-    // TODO: Declare and set a struct timeval instance for a 10-second timeout.
     struct timeval timeout;
     timeout.tv_sec = 10;    // seconds.
     timeout.tv_usec = 0;    // microseconds.
 
     printf("Waiting for input (Timeout of 10seconds)...\n");
-    // TODO: Call select(STDIN_FILENO + 1, &readfds, NULL, NULL, &timeout).
-    auto res = select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout);
+    int res = select(STDIN_FILENO + 1, &set, NULL, NULL, &timeout);
 
-    // TODO: Check the return value of select (error, timeout, or ready).
     if (res == -1) { // Error
         perror ("select() failed");
         return 1;
@@ -32,7 +27,7 @@ int main(void) {
     }
     // Then its ready.
 
-    // TODO: If ready, confirm with FD_ISSET() and read the input using read().
+
     if (FD_ISSET(STDIN_FILENO, &set)) {
         char buffer[1024];
         const ssize_t bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer)-1);
